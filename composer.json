@@ -29,5 +29,8 @@
     "php-di/phpdoc-reader": "^2.0",
     "mayflower/php-codebrowser": "^1.1",
     "phpunit/phpunit": "^5.6"
+  },
+  "require": {
+    "guzzlehttp/psr7": "^2.5"
   }
 }
