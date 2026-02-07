@@ -22,6 +22,11 @@ class AWeberEntry extends AWeberResponse {
     protected $_collections = array();
 
     /**
+     * @var string|null Cached resource type name
+     */
+    protected $type = null;
+
+    /**
      * attrs
      *
      * Provides a simple array of all the available data (and collections) available

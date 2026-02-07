@@ -16,6 +16,9 @@ class AWeberResponse extends AWeberAPIBase {
     public $adapter = false;
     public $data = array();
     public $_dynamicData = array();
+    public $url = '';
+
+    protected $_privateData = array();
 
     /**
      * __construct
@@ -66,6 +69,7 @@ class AWeberResponse extends AWeberAPIBase {
             return $this->data[$value];
         }
         if ($value == 'type') return $this->_type();
+        return null;
     }
 
 }

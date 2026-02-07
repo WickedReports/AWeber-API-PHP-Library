@@ -3,8 +3,10 @@ require_once('aweber_api/aweber_api.php');
 require_once('aweber_api/curl_object.php');
 require_once('mock_adapter.php');
 
-if (!class_exists('Object')) {
-    class Object {}
+use PHPUnit\Framework\TestCase;
+
+class StdObject {
+    public $body;
 }
 
 class PatchedOAuthApplication extends OAuthApplication {
@@ -21,12 +23,12 @@ class PatchedOAuthApplication extends OAuthApplication {
     }    
 }
 
-class TestOAuthApplication extends PHPUnit_Framework_TestCase {
+class TestOAuthApplication extends TestCase {
 
     public $stubrsp = 
         "HTTP/1.1 200 Ok\r\nDate: Fri, 20 Dec 2013 21:23:38 GMT\r\nContent-Type: application/json\r\n\r\n{data:fake}";	
 
-    public function setUp() {
+    public function setUp(): void {
         $parentApp = false;
         $this->oauth = new OAuthApplication($parentApp);
         $this->oauth->consumerSecret = 'CONSUMERSECRET';
@@ -321,7 +323,7 @@ class TestOAuthApplication extends PHPUnit_Framework_TestCase {
      * @return void
      */
     public function testParseResponse() {
-        $response = new Object();
+        $response = new StdObject();
         $response->body = 'oauth_token=oTkBjHdPYyP7j13RffGpllNhktOR775h6jk48D1cu8Y&oauth_token_secret=GRRa1E7MMm526nql1hETKHMu2BvAXpvHaCu332TPAJ4&oauth_callback_confirmed=true';
         $data = $this->oauth->parseResponse($response);
         $dataShouldBe = array(
@@ -341,10 +343,10 @@ class TestOAuthApplication extends PHPUnit_Framework_TestCase {
     }
 
     public function testMakeRequestGet() {
-        $stub = $this->getMock('CurlObject');
+        $stub = $this->createMock(CurlObject::class);
         $stub->expects($this->any())
              ->method('execute')
-             ->will($this->returnValue($this->stubrsp));		
+             ->willReturn($this->stubrsp);		
         $this->oauth->curl = $stub;
         $rsp = $this->oauth->makeRequest("GET",
              'http://www.example.com/fakeresource');
@@ -352,10 +354,10 @@ class TestOAuthApplication extends PHPUnit_Framework_TestCase {
     }
 
     public function testMakeRequestPost() {
-        $stub = $this->getMock('CurlObject');
+        $stub = $this->createMock(CurlObject::class);
         $stub->expects($this->any())
              ->method('execute')
-             ->will($this->returnValue($this->stubrsp));		
+             ->willReturn($this->stubrsp);		
         $this->oauth->curl = $stub;
         $rsp = $this->oauth->makeRequest("POST", 
             'http://www.example.com/fakeresource');
@@ -363,10 +365,10 @@ class TestOAuthApplication extends PHPUnit_Framework_TestCase {
     }	
 
     public function testMakeRequestPut() {
-        $stub = $this->getMock('CurlObject');
+        $stub = $this->createMock(CurlObject::class);
         $stub->expects($this->any())
              ->method('execute')
-             ->will($this->returnValue($this->stubrsp));		
+             ->willReturn($this->stubrsp);		
         $this->oauth->curl = $stub;
         $rsp = $this->oauth->makeRequest("PATCH", 
             'http://www.example.com/fakeresource');
@@ -374,10 +376,10 @@ class TestOAuthApplication extends PHPUnit_Framework_TestCase {
     }
 
     public function testMakeRequestDelete() {
-        $stub = $this->getMock('CurlObject');
+        $stub = $this->createMock(CurlObject::class);
         $stub->expects($this->any())
              ->method('execute')
-             ->will($this->returnValue($this->stubrsp));		
+             ->willReturn($this->stubrsp);		
         $this->oauth->curl = $stub;
         $rsp = $this->oauth->makeRequest("DELETE", 
             'http://www.example.com/fakeresource');
@@ -404,14 +406,14 @@ class TestOAuthApplication extends PHPUnit_Framework_TestCase {
         $patchedoauth->consumerSecret = 'CONSUMERSECRET';
         $patchedoauth->consumerKey = 'consumer_key';
        
-        $stub = $this->getMock('CurlObject');
+        $stub = $this->createMock(CurlObject::class);
         $stub->expects($this->any())
              ->method('execute')
-             ->will($this->returnValue($this->stubrsp));                    
+             ->willReturn($this->stubrsp);                    
         $patchedoauth->curl = $stub;
         $rsp = $patchedoauth->makeRequest("GET", 
             'http://www.example.com/fake?email=noone%2B@sp.com');
-        $this->assertRegExp('/.+(\%252B).+/', $patchedoauth->signatureBase);
+        $this->assertMatchesRegularExpression('/.+(\%252B).+/', $patchedoauth->signatureBase);
     }
 
     /**
@@ -434,14 +436,14 @@ class TestOAuthApplication extends PHPUnit_Framework_TestCase {
         $patchedoauth->consumerSecret = 'CONSUMERSECRET';
         $patchedoauth->consumerKey = 'consumer_key';
        
-        $stub = $this->getMock('CurlObject');
+        $stub = $this->createMock(CurlObject::class);
         $stub->expects($this->any())
              ->method('execute')
-             ->will($this->returnValue($this->stubrsp));                    
+             ->willReturn($this->stubrsp);                    
         $patchedoauth->curl = $stub;
         $rsp = $patchedoauth->makeRequest("GET", 
             'http://www.example.com/fake?email=noone%3D@sp.com');
-        $this->assertRegExp('/.+(\%253D).+/', $patchedoauth->signatureBase);
+        $this->assertMatchesRegularExpression('/.+(\%253D).+/', $patchedoauth->signatureBase);
     }    
 
     /**
@@ -463,14 +465,14 @@ class TestOAuthApplication extends PHPUnit_Framework_TestCase {
         $patchedoauth->consumerSecret = 'CONSUMERSECRET';
         $patchedoauth->consumerKey = 'consumer_key';
        
-        $stub = $this->getMock('CurlObject');
+        $stub = $this->createMock(CurlObject::class);
         $stub->expects($this->any())
              ->method('execute')
-             ->will($this->returnValue($this->stubrsp));                    
+             ->willReturn($this->stubrsp);                    
         $patchedoauth->curl = $stub;
         $rsp = $patchedoauth->makeRequest("GET", 'http://www.example.com/fake',
             array('email' => 'noone+1@sp.com'));
-        $this->assertRegExp('/.+(\%252B).+/', $patchedoauth->signatureBase);
+        $this->assertMatchesRegularExpression('/.+(\%252B).+/', $patchedoauth->signatureBase);
     }
     
     /**
@@ -492,13 +494,13 @@ class TestOAuthApplication extends PHPUnit_Framework_TestCase {
         $patchedoauth->consumerSecret = 'CONSUMERSECRET';
         $patchedoauth->consumerKey = 'consumer_key';
        
-        $stub = $this->getMock('CurlObject');
+        $stub = $this->createMock(CurlObject::class);
         $stub->expects($this->any())
              ->method('execute')
-             ->will($this->returnValue($this->stubrsp));                    
+             ->willReturn($this->stubrsp);                    
         $patchedoauth->curl = $stub;
         $rsp = $patchedoauth->makeRequest("GET", 'http://www.example.com/fake',
             array('email' => 'noone=1@sp.com'));
-        $this->assertRegExp('/.+(\%253D).+/', $patchedoauth->signatureBase);
+        $this->assertMatchesRegularExpression('/.+(\%253D).+/', $patchedoauth->signatureBase);
     }    
 }

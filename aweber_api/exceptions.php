@@ -39,6 +39,9 @@ class AWeberAPIException extends AWeberException {
  */
 class AWeberResourceNotImplemented extends AWeberException {
 
+    public $object;
+    public $value;
+
     public function __construct($object, $value) {
         $this->object = $object;
         $this->value = $value;
@@ -61,6 +64,8 @@ class AWeberResourceNotImplemented extends AWeberException {
  */
 class AWeberMethodNotImplemented extends AWeberException {
 
+    public $object;
+
     public function __construct($object) {
         $this->object = $object;
         parent::__construct("This method is not implemented by the current resource.");
@@ -77,6 +82,9 @@ class AWeberMethodNotImplemented extends AWeberException {
  * @version $id$
  */
 class AWeberOAuthException extends AWeberException {
+
+    public $type;
+    public $message;
 
     public function __construct($type, $message) {
         $this->type = $type;
@@ -100,6 +108,8 @@ class AWeberOAuthException extends AWeberException {
  */
 class AWeberOAuthDataMissing extends AWeberException {
 
+    public $missing;
+
     public function __construct($missing) {
         if (!is_array($missing)) $missing = array($missing); 
         $this->missing = $missing;
@@ -121,6 +131,8 @@ class AWeberOAuthDataMissing extends AWeberException {
  * @version $id$
  */
 class AWeberResponseError extends AWeberException {
+
+    public $uri;
 
     public function __construct($uri) {
         $this->uri = $uri;

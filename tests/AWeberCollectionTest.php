@@ -3,9 +3,11 @@ require_once('aweber_api/aweber_api.php');
 require_once('mock_adapter.php');
 
 
-class TestFindCollection extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
 
-    public function setUp() {
+class TestFindCollection extends TestCase {
+
+    public function setUp(): void {
         $url = '/accounts/1/lists/303449/subscribers';
         $this->adapter = get_mock_adapter();
         $this->subscribers = new AWeberCollection(
@@ -125,13 +127,13 @@ class TestFindCollection extends PHPUnit_Framework_TestCase {
 }
 
 
-class TestAWeberCollection extends PHPUnit_Framework_TestCase {
+class TestAWeberCollection extends TestCase {
 
     /**
      * Run before each test.  Sets up mock adapter, which uses fixture
      * data for requests, and creates a new collection.
      */
-    public function setUp() {
+    public function setUp(): void {
         $this->adapter = get_mock_adapter();
         $this->url = '/accounts/1/lists';
         $data = $this->adapter->request('GET', $this->url);

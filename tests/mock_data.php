@@ -13,6 +13,9 @@ class MockData {
     public static $oauth = true;
     public static $host = true;
 
+    public $body;
+    public $headers;
+
     public static function load($resource) {
         if (!MockData::$host) return '';
         if (!MockData::$oauth) $resource = 'error';
