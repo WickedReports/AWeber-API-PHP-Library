@@ -26,6 +26,11 @@ class AWeberEntry extends AWeberResponse {
      */
     protected $type = null;
 
+    public function __construct($response, $url, $adapter) {
+        parent::__construct($response, $url, $adapter);
+        $this->_type();
+    }
+
     /**
      * attrs
      *

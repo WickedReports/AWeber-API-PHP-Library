@@ -14,7 +14,6 @@ class AWeberAPIException extends AWeberException {
 
     public $type;
     public $status;
-    public $message;
     public $documentation_url;
     public $url;
 
@@ -23,10 +22,9 @@ class AWeberAPIException extends AWeberException {
         $this->url = $url;
         $this->type = $error['type'];
         $this->status = array_key_exists('status', $error) ? $error['status'] : '';
-        $this->message = $error['message'];
         $this->documentation_url = $error['documentation_url'];
 
-        parent::__construct($this->message);
+        parent::__construct($error['message']);
     }
 }
 
@@ -84,11 +82,9 @@ class AWeberMethodNotImplemented extends AWeberException {
 class AWeberOAuthException extends AWeberException {
 
     public $type;
-    public $message;
 
     public function __construct($type, $message) {
         $this->type = $type;
-        $this->message = $message;
         parent::__construct("{$type}: {$message}");
     }
 }
