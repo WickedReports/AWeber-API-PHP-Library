@@ -2,9 +2,11 @@
 require_once('aweber_api/aweber_api.php');
 require_once('mock_adapter.php');
 
-class TestAWeberCollectionParentEntry extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
 
-    public function setUp() {
+class TestAWeberCollectionParentEntry extends TestCase {
+
+    public function setUp(): void {
         $this->adapter = get_mock_adapter();
         $url = '/accounts/1/lists';
         $data = $this->adapter->request('GET', $url);

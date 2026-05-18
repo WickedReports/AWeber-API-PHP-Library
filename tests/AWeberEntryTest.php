@@ -2,13 +2,15 @@
 require_once('aweber_api/aweber_api.php');
 require_once('mock_adapter.php');
 
-class TestAWeberEntry extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class TestAWeberEntry extends TestCase {
 
     /**
      * Before each test, sets up mock adapter to fake requests with fixture
      * data and AWeberEntry based on list 303449
      */
-    public function setUp() {
+    public function setUp(): void {
         $this->adapter = get_mock_adapter();
         $url = '/accounts/1/lists/303449';
         $data = $this->adapter->request('GET', $url);
@@ -70,7 +72,7 @@ class TestAWeberEntry extends PHPUnit_Framework_TestCase {
      */
     public function testShouldThrowExceptionIfNotImplemented() {
         $this->adapter->clearRequests();
-        $this->setExpectedException('AWeberResourceNotImplemented');
+        $this->expectException(AWeberResourceNotImplemented::class);
         $obj = $this->entry->something_not_implemented;
         $this->assertEquals(count($this->adapter->requestsMade), 0);
     }
@@ -116,7 +118,8 @@ class TestAWeberEntry extends PHPUnit_Framework_TestCase {
         $data = $this->adapter->request('GET', $url);
         $entry = new AWeberEntry($data, $url, $this->adapter);
 
-        $this->setExpectedException('AWeberAPIException', 'Simulated Exception');
+        $this->expectException(AWeberAPIException::class);
+        $this->expectExceptionMessage('Simulated Exception');
         $entry->delete();
     }
 
@@ -154,7 +157,8 @@ class TestAWeberEntry extends PHPUnit_Framework_TestCase {
         $data = $this->adapter->request('GET', $url);
         $entry = new AWeberEntry($data, $url, $this->adapter);
         $entry->name = 'foobarbaz';
-        $this->setExpectedException('AWeberAPIException', 'Simulated Exception');
+        $this->expectException(AWeberAPIException::class);
+        $this->expectExceptionMessage('Simulated Exception');
         $resp = $entry->save();
     }
 
@@ -177,9 +181,9 @@ class TestAWeberEntry extends PHPUnit_Framework_TestCase {
 
 }
 
-abstract class AccountTestCase extends PHPUnit_Framework_TestCase {
+abstract class AccountTestCase extends TestCase {
 
-    public function setUp() {
+    public function setUp(): void {
         $this->adapter = get_mock_adapter();
         $url = '/accounts/1';
         $data = $this->adapter->request('GET', $url);
@@ -206,7 +210,7 @@ class TestAWeberAccountEntry extends AccountTestCase {
 
 class TestAccountGetWebForms extends AccountTestCase {
 
-    public function setUp() {
+    public function setUp(): void {
         parent::setUp();
         $this->forms = $this->entry->getWebForms();
     }
@@ -234,7 +238,7 @@ class TestAccountGetWebForms extends AccountTestCase {
 
 class TestAccountGetWebFormSplitTests extends AccountTestCase {
 
-    public function setUp() {
+    public function setUp(): void {
         parent::setUp();
         $this->forms = $this->entry->getWebFormSplitTests();
     }
@@ -289,9 +293,9 @@ class TestAccountFindSubscribers extends AccountTestCase {
 
 }
 
-class TestAWeberSubscriberEntry extends PHPUnit_Framework_TestCase {
+class TestAWeberSubscriberEntry extends TestCase {
 
-    public function setUp() {
+    public function setUp(): void {
         $this->adapter = get_mock_adapter();
         $url = '/accounts/1/lists/303449/subscribers/1';
         $data = $this->adapter->request('GET', $url);
@@ -345,9 +349,9 @@ class TestAWeberSubscriberEntry extends PHPUnit_Framework_TestCase {
     }
 }
 
-class TestAWeberMoveEntry extends PHPUnit_Framework_TestCase {
+class TestAWeberMoveEntry extends TestCase {
 
-    public function setUp() {
+    public function setUp(): void {
         $this->adapter = get_mock_adapter();
 
         # Get Subscriber
@@ -394,7 +398,8 @@ class TestAWeberMoveEntry extends PHPUnit_Framework_TestCase {
      public function testMove_Failure() {
 
          $this->adapter->clearRequests();
-         $this->setExpectedException('AWeberAPIException', 'Simulated Exception');
+         $this->expectException(AWeberAPIException::class);
+         $this->expectExceptionMessage('Simulated Exception');
          $this->unsubscribed->move($this->different_list);
          $this->assertEquals(sizeOf($this->adapter->requestsMade), 1);
 
@@ -434,9 +439,9 @@ class TestAWeberMoveEntry extends PHPUnit_Framework_TestCase {
 
 }
 
-class TestGettingEntryParentEntry extends PHPUnit_Framework_TestCase {
+class TestGettingEntryParentEntry extends TestCase {
 
-    public function setUp() {
+    public function setUp(): void {
         $this->adapter = get_mock_adapter();
         $url = '/accounts/1/lists/303449';
         $data = $this->adapter->request('GET', $url);

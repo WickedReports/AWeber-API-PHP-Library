@@ -14,7 +14,6 @@ class AWeberAPIException extends AWeberException {
 
     public $type;
     public $status;
-    public $message;
     public $documentation_url;
     public $url;
 
@@ -23,10 +22,9 @@ class AWeberAPIException extends AWeberException {
         $this->url = $url;
         $this->type = $error['type'];
         $this->status = array_key_exists('status', $error) ? $error['status'] : '';
-        $this->message = $error['message'];
         $this->documentation_url = $error['documentation_url'];
 
-        parent::__construct($this->message);
+        parent::__construct($error['message']);
     }
 }
 
@@ -38,6 +36,9 @@ class AWeberAPIException extends AWeberException {
  * @version $id$
  */
 class AWeberResourceNotImplemented extends AWeberException {
+
+    public $object;
+    public $value;
 
     public function __construct($object, $value) {
         $this->object = $object;
@@ -61,6 +62,8 @@ class AWeberResourceNotImplemented extends AWeberException {
  */
 class AWeberMethodNotImplemented extends AWeberException {
 
+    public $object;
+
     public function __construct($object) {
         $this->object = $object;
         parent::__construct("This method is not implemented by the current resource.");
@@ -78,9 +81,10 @@ class AWeberMethodNotImplemented extends AWeberException {
  */
 class AWeberOAuthException extends AWeberException {
 
+    public $type;
+
     public function __construct($type, $message) {
         $this->type = $type;
-        $this->message = $message;
         parent::__construct("{$type}: {$message}");
     }
 }
@@ -99,6 +103,8 @@ class AWeberOAuthException extends AWeberException {
  * @version $id$
  */
 class AWeberOAuthDataMissing extends AWeberException {
+
+    public $missing;
 
     public function __construct($missing) {
         if (!is_array($missing)) $missing = array($missing); 
@@ -121,6 +127,8 @@ class AWeberOAuthDataMissing extends AWeberException {
  * @version $id$
  */
 class AWeberResponseError extends AWeberException {
+
+    public $uri;
 
     public function __construct($uri) {
         $this->uri = $uri;

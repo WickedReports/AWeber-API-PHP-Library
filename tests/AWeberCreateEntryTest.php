@@ -8,9 +8,11 @@ require_once('mock_adapter.php');
  * This class contains a set of unit tests verifying the
  * functionality related to creating an entry in a collection.
  */
-class TestAWeberCreateEntry extends PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
 
-    public function setUp() {
+class TestAWeberCreateEntry extends TestCase {
+
+    public function setUp(): void {
         $this->adapter = get_mock_adapter();
 
         # Get CustomFields
@@ -122,11 +124,11 @@ EOT;
         $aweber = new AWeberAPI($consumerKey, $consumerSecret);
 
         // Set up the cURL Stub
-        $stub = $this->getMock('CurlObject');
+        $stub = $this->createMock(CurlObject::class);
         $stub->expects($this->any())
              ->method('execute')
-             ->will($this->onConsecutiveCalls($postCustomFieldRsp,
-                                              $getCustomFieldRsp));
+             ->willReturnOnConsecutiveCalls($postCustomFieldRsp,
+                                              $getCustomFieldRsp);
         $aweber->adapter->curl = $stub;
 
         // Create an empty custom field collection to work on.
@@ -171,10 +173,10 @@ EOT;
         $aweber = new AWeberAPI($consumerKey, $consumerSecret);
 
         // Set up the cURL Stub
-        $stub = $this->getMock('CurlObject');
+        $stub = $this->createMock(CurlObject::class);
         $stub->expects($this->any())
              ->method('execute')
-             ->will($this->returnValue($postCustomFieldRsp));
+             ->willReturn($postCustomFieldRsp);
         $aweber->adapter->curl = $stub;
 
         // Create an empty custom field collection to work on.

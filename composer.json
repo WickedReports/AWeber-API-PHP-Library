@@ -19,18 +19,15 @@
     ]
   },
   "require-dev": {
-    "phpdocumentor/phpdocumentor": "^2.9",
-    "pdepend/pdepend": "^2.2",
-    "phpmd/phpmd": "^2.4",
-    "bamboohr/phpcs": "^0.1.4",
-    "sebastian/phpcpd": "^2.0",
-    "phploc/phploc": "^3.0",
-    "squizlabs/php_codesniffer": "^2.7",
+    "phpdocumentor/phpdocumentor": "^3.9",
+    "pdepend/pdepend": "^2.16",
+    "phpmd/phpmd": "^2.15",
+    "squizlabs/php_codesniffer": "^4.0",
     "php-di/phpdoc-reader": "^2.0",
-    "mayflower/php-codebrowser": "^1.1",
-    "phpunit/phpunit": "^5.6"
+    "phpunit/phpunit": "^10.5"
   },
   "require": {
-    "guzzlehttp/psr7": "1.9"
+    "php": "^8.4",
+    "guzzlehttp/psr7": "^2.7"
   }
 }

@@ -161,9 +161,9 @@ class AWeberCollection extends AWeberResponse implements ArrayAccess, Iterator, 
      * http://php.net/manual/en/class.arrayaccess.php
      */
 
-    public function offsetSet($offset, $value)  {}
-    public function offsetUnset($offset)        {}
-    public function offsetExists($offset) {
+    public function offsetSet(mixed $offset, mixed $value): void  {}
+    public function offsetUnset(mixed $offset): void        {}
+    public function offsetExists(mixed $offset): bool {
 
         if ($offset >=0 && $offset < $this->total_size) {
             return true;
@@ -211,7 +211,7 @@ class AWeberCollection extends AWeberResponse implements ArrayAccess, Iterator, 
         }
     }
 
-    public function offsetGet($offset) {
+    public function offsetGet(mixed $offset): mixed {
 
         if (!$this->offsetExists($offset)) {
             return null;
@@ -237,23 +237,23 @@ class AWeberCollection extends AWeberResponse implements ArrayAccess, Iterator, 
      */
     protected $_iterationKey = 0;
 
-    public function current() {
+    public function current(): mixed {
         return $this->offsetGet($this->_iterationKey);
     }
 
-    public function key() {
+    public function key(): mixed {
         return $this->_iterationKey;
     }
 
-    public function next() {
+    public function next(): void {
         $this->_iterationKey++;
     }
 
-    public function rewind() {
+    public function rewind(): void {
         $this->_iterationKey = 0;
     }
 
-    public function valid() {
+    public function valid(): bool {
         return $this->offsetExists($this->key());
     }
 
@@ -263,7 +263,7 @@ class AWeberCollection extends AWeberResponse implements ArrayAccess, Iterator, 
      * http://www.php.net/manual/en/class.countable.php
      */
 
-    public function count() {
+    public function count(): int {
         return $this->total_size;
     }
 }

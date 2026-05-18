@@ -16,3 +16,4 @@ build
 !build/phpmd.xml
 !build/phpunit.xml
 /composer.lock
+.phpunit.cache

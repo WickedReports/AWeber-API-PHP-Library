@@ -1,5 +1,7 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
+
 $errors = array();
 
 /**
@@ -11,9 +13,9 @@ function myErrorHandler($type, $msg, $errfile, $errline) {
 }
 
 
-class TestMultipleInstalledVersions extends PHPUnit_Framework_TestCase {
+class TestMultipleInstalledVersions extends TestCase {
 
-    public function setUp() {
+    public function setUp(): void {
         global $errors;
         $errors = array();
     }
